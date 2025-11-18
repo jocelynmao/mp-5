@@ -16,6 +16,6 @@ export default async function getUrlByAlias(alias: string): Promise<UrlRecord | 
         id: data._id.toHexString(),
         url: data.url,
         alias: data.alias,
-        fullUrl: `${base}/${alias}`,
+        fullUrl: `${base}/${data.alias}`,
     };
 }

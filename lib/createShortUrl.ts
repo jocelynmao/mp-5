@@ -34,7 +34,6 @@ export default async function createShortUrl(
     const base = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
     const record: UrlRecord = {
-        id: alias,
         url,
         alias,
         fullUrl: `${base}/${alias}`,
