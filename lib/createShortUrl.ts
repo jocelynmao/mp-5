@@ -31,9 +31,13 @@ export default async function createShortUrl(
         throw new Error("Invalid alias: This alias already exists");
     }
 
-    const record = {
+    const base = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+
+    const record: UrlRecord = {
+        id: alias,
         url,
         alias,
+        fullUrl: `${base}/${alias}`,
     };
 
     const res = await urlsCollection.insertOne(record);
@@ -42,12 +46,5 @@ export default async function createShortUrl(
         throw new Error("DB insert failed");
     }
 
-    const base = "https://cs391-url-shortener.vercel.app/";
-
-    return {
-        id: res.insertedId.toHexString(),
-        url,
-        alias,
-        fullUrl: `${base}${alias}`,
-    };
+    return record;
 }
