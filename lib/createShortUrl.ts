@@ -31,7 +31,7 @@ export default async function createShortUrl(
         throw new Error("Invalid alias: This alias already exists");
     }
 
-    const base = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+    const base = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
     const record: UrlRecord = {
         id: alias,
