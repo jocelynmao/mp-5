@@ -3,22 +3,15 @@ import {redirect} from "next/navigation";
 
 export default async function AliasRedirectPage({
                                                     params,
-                                                }: {params: {alias: string};
-}){
-    const {alias} = params;
+                                                }: {params: Promise<{alias: string}>;}) {
+    const {alias} = await params;
 
-    let urlRecord=null;
+    console.log("alias", alias);
 
-    try {
-        urlRecord = await getUrlByAlias(alias);
-    } catch (err) {
-        console.log("This error occured", err);
-        redirect("/");
+    const url = await getUrlByAlias(alias);
+
+    if (url) {
+        redirect(url.url);
     }
-
-    if (!urlRecord) {
-        redirect("/");
-    } else {
-        redirect(urlRecord.url);
-    }
+    redirect("/");
 }

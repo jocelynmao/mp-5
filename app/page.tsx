@@ -1,4 +1,4 @@
-import ShortenForm from "@/components/ShortenForm";
+import HomeDisplay from "@/components/HomeDisplay";
 
 export default function Home() {
     return (
@@ -7,14 +7,7 @@ export default function Home() {
             <p className="text-base text-gray-900">
                 Shorten your long URLs into compact, shareable links
             </p>
-
-            <div className="flex flex-col items-center">
-                <h3 className="text-4xl font-semibold text-gray-900">Shorten a URL</h3>
-                <p className="text-base text-gray-900">
-                    Enter a long URL to create a shorter, shareable link
-                </p>
-                <ShortenForm />
+                <HomeDisplay />
             </div>
-        </div>
     );
 }

@@ -1,6 +1,6 @@
 "use server";
-
 import getCollection, {URLS_COLLECTION} from "@/db";
+import getUrlByAlias from "./getUrlByAlias";
 import {UrlRecord} from "@/types";
 
 export default async function createShortUrl(
@@ -10,7 +10,7 @@ export default async function createShortUrl(
     console.log("creating new short URL");
 
     if (!url || !alias) {
-        throw new Error("URL and alias are required");
+        throw new Error ("URL and alias are required");
     }
 
     try {
@@ -24,26 +24,23 @@ export default async function createShortUrl(
         throw new Error("Invalid alias: You may only use valid URL characters");
     }
 
-    const urlsCollection = await getCollection(URLS_COLLECTION);
-
-    const existing = await urlsCollection.findOne({alias});
+    const existing = await getUrlByAlias(alias);
     if (existing) {
-        throw new Error("Invalid alias: This alias already exists");
+        throw new Error ("Invalid alias: This alias already exists");
     }
 
-    const base = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
-    const record: UrlRecord = {
-        url,
+    const newShortUrl = {
         alias,
-        fullUrl: `${base}/${alias}`,
+        url,
     };
 
-    const res = await urlsCollection.insertOne(record);
+    const urlsCollection = await getCollection(URLS_COLLECTION);
+
+    const res = await urlsCollection.insertOne({...newShortUrl});
 
     if (!res.acknowledged) {
         throw new Error("DB insert failed");
     }
 
-    return record;
+    return {...newShortUrl, id: res.insertedId.toHexString()};
 }
